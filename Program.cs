@@ -123,10 +123,10 @@ public static unsafe class MyApp
         c->selfRef = c;
         c->x = 0;
 
-        // Memory.RegisterFinalizer(c, () =>
-        // {
-        //     Console.WriteLine($"Finalizing circular reference: {i}");
-        // });
+        Memory.RegisterFinalizer(c, () =>
+        {
+            Console.WriteLine($"Finalizing circular reference: {i}");
+        });
     }
 
     public static void Main()
