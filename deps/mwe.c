@@ -20,7 +20,11 @@ struct S
 void test()
 {
     struct S* s = (struct S*) GC_malloc(sizeof(struct S));
-    s->self = NULL;
+
+    // comment this line will cause the finalizers
+    // to get called after 'GC_gcollect()'
+    s->self = s;
+
     GC_register_finalizer(s, finalizer, NULL, NULL, NULL);
 }
 
