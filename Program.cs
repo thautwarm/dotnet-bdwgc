@@ -32,6 +32,8 @@ public static class Memory
     public static unsafe T* Malloc<T>() where T : unmanaged => (T*)GC_malloc(sizeof(T));
     public static unsafe T* MallocAtomic<T>(long size) where T : unmanaged => (T*)GC_malloc_atomic(size);
     public static unsafe T* MallocUncollectable<T>(long size) where T : unmanaged => (T*)GC_malloc_uncollectable(size);
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static unsafe void RegisterFinalizer(void* obj, Action fn)
     {
         lock (finalizers)
@@ -146,6 +148,10 @@ public static unsafe class MyApp
 
         // it seems that circular references are not well handled?
         Memory.Collect();
+        Memory.Collect();
+
+        Console.WriteLine($"GC_get_total_bytes(): {Memory.TotalBytes}");
+
 
         // wait for finalizers to run
         // Thread.Sleep(10000);
